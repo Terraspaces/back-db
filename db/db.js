@@ -1,4 +1,4 @@
-const dbConnection = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DB}?authSource=admin`;
+const dbConnection = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DB}:${process.env.MONGODB_PORT}?authSource=admin`;
 const mongoose = require("mongoose");
 const trendingCollectionModel = require("./model/trendingCollection");
 
