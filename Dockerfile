@@ -3,4 +3,4 @@ WORKDIR "/index"
 COPY ./package.json ./
 RUN npm install
 COPY . .
-CMD ["npm", "run", "debug"]
+CMD ["npm", "run", "start"]
