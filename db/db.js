@@ -1,4 +1,4 @@
-const dbConnection = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DB}:${process.env.MONGODB_PORT}?authSource=admin`;
+const dbConnection = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}?authSource=admin`;
 const mongoose = require("mongoose");
 const trendingCollectionModel = require("./model/trendingCollection");
 
@@ -6,7 +6,6 @@ const bulkInsertTrendingCollectionData = async (collections) => {
   try {
     const transactions = [];
     let trx = {};
-    let m;
 
     for (const key in collections) {
       if (Object.hasOwnProperty.call(collections, key)) {
