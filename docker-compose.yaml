@@ -12,9 +12,9 @@ services:
       MONGO_INITDB_DATABASE: "${MONGODB_DB}"
     volumes:
       - mongodata:/data/db
-    network_mode: host
-    # networks:
-    #   - mongonet
+    # network_mode: host
+    networks:
+      - mongonet
   # https://hub.docker.com/_/mongo-express
   mongo-express:
     image: mongo-express
@@ -26,35 +26,35 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: "${MONGODB_PASS}"
       ME_CONFIG_MONGODB_ENABLE_ADMIN: true
       ME_CONFIG_MONGODB_URL: "mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}:${MONGODB_PORT}"
-    # networks:
-    #   - mongonet
-    network_mode: host
-  # node-web:
-  #   build:
-  #     context: ./
-  #     dockerfile: Dockerfile
-  #   links:
-  #     - mongodb
-  #   volumes:
-  #     - /app/node_modules
-  #     - ./:/app
-  #   ports:
-  #     - "4001:4001"
-  #   networks:
-  #     - mongonet
-  #   environment:
-  #     MONGODB_USER: ${MONGODB_USER}
-  #     MONGODB_PASS: ${MONGODB_PASS}
-  #     MONGODB_HOST: ${MONGODB_HOST}
-  #     MONGODB_DB: ${MONGODB_DB}
-  #     FETCH_URL: ${FETCH_URL}
-  #     CONTRACT_ACCOUNT_ID: ${CONTRACT_ACCOUNT_ID}
-  #     NEAR_DB_CONNECTION: ${NEAR_DB_CONNECTION}
-  #     NETWORK_ID: ${NETWORK_ID}
-  #     NODE_URL: ${NODE_URL}
-# networks:
-#   mongonet:
-#     driver: bridge
+    networks:
+      - mongonet
+    # network_mode: host
+  node-web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    links:
+      - mongodb
+    volumes:
+      - /app/node_modules
+      - ./:/app
+    ports:
+      - "4001:4001"
+    networks:
+      - mongonet
+    environment:
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASS: ${MONGODB_PASS}
+      MONGODB_HOST: ${MONGODB_HOST}
+      MONGODB_DB: ${MONGODB_DB}
+      FETCH_URL: ${FETCH_URL}
+      CONTRACT_ACCOUNT_ID: ${CONTRACT_ACCOUNT_ID}
+      NEAR_DB_CONNECTION: ${NEAR_DB_CONNECTION}
+      NETWORK_ID: ${NETWORK_ID}
+      NODE_URL: ${NODE_URL}
+networks:
+  mongonet:
+    driver: bridge
 
 volumes:
   mongodata:
