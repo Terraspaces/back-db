@@ -17,11 +17,11 @@ const bulkInsertCollectionData = async (collections) => {
         total_listed: 0,
         total_owners: 0,
         floor_price: 0,
-        floor_price_24: 0,
-        floor_price_7: 0,
+        // floor_price_24: 0,
+        // floor_price_7: 0,
         total_volume: 0,
-        instant_volume: 0,
-        day_volume: 0,
+        // instant_volume: 0,
+        // day_volume: 0,
       };
 
       const collectionResults = await fetch(`${FETCH_URL}${collectionName}`);
@@ -38,11 +38,11 @@ const bulkInsertCollectionData = async (collections) => {
               ""
             )
           ),
-          floor_price_24: 0,
+          // floor_price_24:
           // current_data.length > 143
           //   ? current_data[current_data.length - 144].floor_price
           //   : 0,
-          floor_price_7: 0,
+          // floor_price_7:
           // current_data.length > 1007
           //   ? current_data[current_data.length - 1008].floor_price
           //   : 0,
@@ -52,7 +52,7 @@ const bulkInsertCollectionData = async (collections) => {
               ""
             )
           ),
-          instant_volume: 0,
+          // instant_volume:
           // current_data.length > 0
           //   ? Number.parseFloat(
           //       formatNearAmount(stats.data.results.volume).replace(
@@ -61,7 +61,7 @@ const bulkInsertCollectionData = async (collections) => {
           //       )
           //     ) - current_data[current_data.length - 1].total_volume
           //   : 0,
-          day_volume: 0,
+          // day_volume:
           // current_data.length > 143
           //   ? Number.parseFloat(
           //       formatNearAmount(stats.data.results.volume).replace(
