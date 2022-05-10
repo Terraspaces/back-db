@@ -2,14 +2,14 @@ require("dotenv").config();
 
 const cron = require("node-cron");
 const db = require("./db/db");
-const transaction = require("./transaction");
+const { getObserveCollections } = require("./transaction");
 
 let executionCount = 0;
-const task = cron.schedule("*/2 * * * *", async (d) => {
+const task = cron.schedule("*/10 * * * *", async (d) => {
   console.log("date: ", d.toISOString());
 
-  const trendingCollectionData = await transaction.getTrendingCollectionData();
-  await db.bulkInsertTrendingCollectionData(trendingCollectionData);
+  const collections = await getObserveCollections();
+  await db.bulkInsertCollectionData(collections);
   executionCount++;
   console.log("executionCount: ", executionCount);
 });
