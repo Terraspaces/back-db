@@ -20,8 +20,7 @@ const dropTask = cron.schedule("*/2 * * * *", async (d) => {
 const init = async () => {
   await db.init();
   fillObserveCollectionsTask.start();
-  // dropTask.start();
-  await cron_upcomingevents();
+  dropTask.start();
 };
 
 init();
