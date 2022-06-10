@@ -20,11 +20,11 @@ const cron_upcomingevents = async () => {
     const dropsToUpdate = [];
     let existingDrop;
     for (const drop of drops) {
-      existingDrop = existingDrops.find((d) => d.name === drop.name);
+      existingDrop = existingDrops.find((d) => d.id === drop.id);
       if (existingDrop) {
         dropsToUpdate.push({
           updateOne: {
-            filter: { name: existingDrop.name },
+            filter: { id: existingDrop.id },
             update: {
               $set: existingDrop,
             },
@@ -52,9 +52,9 @@ const cron_upcomingevents = async () => {
 const get_existing_drops = async () => {
   let drops = [];
   try {
-    drops = await dropModel.find({}, { name: 1 });
+    drops = await dropModel.find({}, { id: 1 });
   } catch (error) {
-    console.error(`${cron_upcomingevents.name} error:`, error);
+    console.error(`${get_existing_drops.name} error:`, error);
   }
   return drops;
 };
