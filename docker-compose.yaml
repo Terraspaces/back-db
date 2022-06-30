@@ -29,30 +29,33 @@ services:
     networks:
       - mongonet
     # network_mode: host
-  node-web:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    links:
-      - mongodb
-    volumes:
-      - /app/node_modules
-      - ./:/app
-    ports:
-      - "4001:4001"
-    networks:
-      - mongonet
-    environment:
-      MONGODB_USER: ${MONGODB_USER}
-      MONGODB_PASS: ${MONGODB_PASS}
-      MONGODB_HOST: ${MONGODB_HOST}
-      MONGODB_PORT: ${MONGODB_PORT}
-      MONGODB_DB: ${MONGODB_DB}
-      FETCH_URL: ${FETCH_URL}
-      CONTRACT_ACCOUNT_ID: ${CONTRACT_ACCOUNT_ID}
-      NEAR_DB_CONNECTION: ${NEAR_DB_CONNECTION}
-      NETWORK_ID: ${NETWORK_ID}
-      NODE_URL: ${NODE_URL}
+  # node-web:
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   restart: unless-stopped
+  #   stdin_open: true
+  #   tty: true
+  #   links:
+  #     - mongodb
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./:/app
+  #   ports:
+  #     - "4001:4001"
+  #   networks:
+  #     - mongonet
+  #   environment:
+  #     MONGODB_USER: ${MONGODB_USER}
+  #     MONGODB_PASS: ${MONGODB_PASS}
+  #     MONGODB_HOST: ${MONGODB_HOST}
+  #     MONGODB_PORT: ${MONGODB_PORT}
+  #     MONGODB_DB: ${MONGODB_DB}
+  #     FETCH_URL: ${FETCH_URL}
+  #     CONTRACT_ACCOUNT_ID: ${CONTRACT_ACCOUNT_ID}
+  #     NEAR_DB_CONNECTION: ${NEAR_DB_CONNECTION}
+  #     NETWORK_ID: ${NETWORK_ID}
+  #     NODE_URL: ${NODE_URL}
 networks:
   mongonet:
     driver: bridge
