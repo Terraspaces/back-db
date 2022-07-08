@@ -6,7 +6,7 @@ const { bulkInsertCollectionData } = require("./db/collections-db");
 const { cron_upcomingevents } = require("./db/drop-db");
 const { getObserveCollections } = require("./integration/transaction");
 
-const fillObserveCollectionsTask = cron.schedule("*/1 * * * *", async (d) => {
+const fillObserveCollectionsTask = cron.schedule("*/10 * * * *", async (d) => {
   console.log("date: ", d.toISOString());
   const collections = await getObserveCollections();
   await bulkInsertCollectionData(collections);
