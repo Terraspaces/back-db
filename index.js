@@ -9,7 +9,7 @@ const { getObserveCollections } = require("./integration/transaction");
 const fillObserveCollectionsTask = cron.schedule("*/1 * * * *", async (d) => {
   console.log("date: ", d.toISOString());
   const collections = await getObserveCollections();
-  await db.bulkInsertCollectionData(collections);
+  await bulkInsertCollectionData(collections);
 });
 
 const dropTask = cron.schedule("*/2 * * * *", async (d) => {
