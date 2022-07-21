@@ -6,7 +6,7 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
   let result_count = 1;
   let statistics_result = {};
   let skip = 0;
-  let limit = 0;
+  let limit = 100;
 
   while (result_count > 0) {
     const aggregation = [
