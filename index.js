@@ -19,7 +19,7 @@ const feedTempStatisticsTask = cron.schedule("0 0 * * *", async (d) => {
   await feed_temp_statistics();
 });
 
-const dropTask = cron.schedule("*/2 * * * *", async (d) => {
+const dropTask = cron.schedule("*/5 * * * *", async (d) => {
   console.log("date: ", d.toISOString());
   await cron_upcomingevents();
 });
