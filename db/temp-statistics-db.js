@@ -446,13 +446,17 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
       allowDiskUse: true,
     });
 
-    console.log("keys: ", Object.keys(temp_statistics[0]));
     if (temp_statistics.length <= 0) {
       console.warn("no statistics found");
       result_count = 0;
       break;
     }
     const { statistics } = temp_statistics[0];
+    if (statistics.length <= 0) {
+      console.warn("no statistics found");
+      result_count = 0;
+      break;
+    }
 
     console.log("statistics", statistics);
     statistics_result = statistics_result.concat(statistics);
