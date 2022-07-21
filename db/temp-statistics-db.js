@@ -456,6 +456,7 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
 
     console.log("statistics", statistics);
     statistics_result = { ...statistics, ...statistics_result };
+    console.log("statistics_result", statistics_result);
     skip++;
   }
 
