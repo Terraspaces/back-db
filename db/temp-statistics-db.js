@@ -458,9 +458,9 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
       break;
     }
 
-    console.log("statistics", statistics);
+    console.log("statistics.length", statistics.length);
     statistics_result = statistics_result.concat(statistics);
-    console.log("statistics_result", statistics_result);
+    console.log("statistics_result.length", statistics_result.length);
     skip++;
   }
 
