@@ -459,7 +459,10 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
     skip++;
   }
 
-  const st = new tempStatisticsModel({ name: collection_name, statistics });
+  const st = new tempStatisticsModel({
+    name: collection_name,
+    statistics: statistics_result,
+  });
   await st.save();
 
   return;
