@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const tempStatisticsSchema = new mongoose.Schema(
+const statisticsSchema = new mongoose.Schema(
   {
-    name: String,
     total_items: Number,
     total_listed: Number,
     total_owners: Number,
@@ -17,6 +16,19 @@ const tempStatisticsSchema = new mongoose.Schema(
   },
   {
     _id: false,
+    timestamps: {
+      createdAt: "created_at", // Use `created_at` to store the created date
+      updatedAt: "updated_at", // and `updated_at` to store the last updated date
+    },
+  }
+);
+
+const tempStatisticsSchema = new mongoose.Schema(
+  {
+    name: String,
+    statistics: [statisticsSchema],
+  },
+  {
     timestamps: {
       createdAt: "created_at", // Use `created_at` to store the created date
       updatedAt: "updated_at", // and `updated_at` to store the last updated date

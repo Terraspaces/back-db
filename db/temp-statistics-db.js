@@ -2,6 +2,7 @@ const collectionModel = require("./model/collection");
 const tempStatisticsModel = require("./model/temp-statistics");
 
 const feed_temp_statistics_for_collection = async (collection_name) => {
+  console.log("collection_name", collection_name);
   const aggregation = [
     {
       $facet: {
@@ -419,14 +420,20 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
     },
   ];
 
-  const collectionsArray = await collectionModel
-    .aggregate(aggregation, { allowDiskUse: true })
-    .toArray();
+  const temp_statistics = await collectionModel.aggregate(aggregation, {
+    allowDiskUse: true,
+  });
 
-  console.log("keys: ", Object.keys(collectionsArray[0]));
-  const { statistics } = collectionsArray[0];
+  console.log("keys: ", Object.keys(temp_statistics[0]));
+  if (temp_statistics.length <= 0) {
+    console.warn("no statistics found");
+    return;
+  }
+  const { statistics } = temp_statistics[0];
 
-  await tempStatisticsModel.create(statistics);
+  console.log("statistics", statistics);
+  const st = new tempStatisticsModel(statistics);
+  await st.save();
 
   return;
 };
