@@ -4,7 +4,7 @@ const tempStatisticsModel = require("./model/temp-statistics");
 const feed_temp_statistics_for_collection = async (collection_name) => {
   console.log("collection_name", collection_name);
   let result_count = 1;
-  let statistics_result = {};
+  let statistics_result = [];
   let skip = 0;
   let limit = 100;
 
@@ -455,7 +455,7 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
     const { statistics } = temp_statistics[0];
 
     console.log("statistics", statistics);
-    statistics_result = { ...statistics, ...statistics_result };
+    statistics_result = statistics_result.concat(statistics);
     console.log("statistics_result", statistics_result);
     skip++;
   }
