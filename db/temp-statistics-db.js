@@ -2,6 +2,7 @@ const collectionModel = require("./model/collection");
 const tempStatisticsModel = require("./model/temp-statistics");
 
 const feed_temp_statistics_for_collection = async (collection_name) => {
+  console.time(feed_temp_statistics_for_collection.name);
   console.log("collection_name", collection_name);
   let result_count = 1;
   let statistics_result = [];
@@ -470,18 +471,19 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
   });
   await st.save();
 
+  console.timeEnd(feed_temp_statistics_for_collection.name);
   return;
 };
 
 const feed_temp_statistics = async () => {
-  console.time(feed_temp_statistics.name);
+  console.time(`start ${feed_temp_statistics.name}`);
   const collections = await collectionModel.find({}, { name: 1 });
   for (const c of collections) {
-    console.time(c.name);
+    console.time(`${c.name}`);
     await feed_temp_statistics_for_collection(c.name);
-    console.timeEnd(c.name);
+    console.timeEnd(`${c.name}`);
   }
-  console.timeEnd(feed_temp_statistics.name);
+  console.timeEnd(`start ${feed_temp_statistics.name}`);
 
   return;
 };
