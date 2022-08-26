@@ -26,6 +26,7 @@ const dropTask = cron.schedule("*/5 * * * *", async (d) => {
 
 const init = async () => {
   await db.init();
+  await feed_temp_statistics();
   fillObserveCollectionsTask.start();
   dropTask.start();
   feedTempStatisticsTask.start();
