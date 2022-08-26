@@ -443,9 +443,11 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
       },
     ];
 
-    const temp_statistics = await collectionModel.aggregate(aggregation, {
-      allowDiskUse: true,
-    });
+    const temp_statistics_cursor = await collectionModel
+      .aggregate(aggregation, {
+        allowDiskUse: true,
+      })
+      .cursor();
 
     if (temp_statistics.length <= 0) {
       console.warn("no statistics found");
@@ -475,12 +477,169 @@ const feed_temp_statistics_for_collection = async (collection_name) => {
   return;
 };
 
+const feed_temp_statistics_for_collection_test = async (collection_name) => {
+  console.time(feed_temp_statistics_for_collection_test.name);
+  console.log("collection_name", collection_name);
+  let statistics_result = [];
+
+  const aggregation = [
+    {
+      $match: { name: collection_name },
+    },
+    {
+      $project: {
+        created_at: 0,
+        updated_at: 0,
+      },
+    },
+    {
+      $unwind: "$statistics",
+    },
+    {
+      $sort: { "statistics.created_at": -1 },
+    },
+  ];
+
+  const temp_statistics = await collectionModel.aggregate(aggregation, {
+    allowDiskUse: true,
+  });
+
+  for (let i = 0; i < temp_statistics.length; i++) {
+    const current_statistic = temp_statistics[i];
+    const previous_statistic =
+      i > 0 ? temp_statistics[i - 1] : temp_statistics[i];
+
+    const statistic = current_statistic.statistics;
+    const created_at_date = statistic.created_at
+      .toLocaleDateString()
+      .replaceAll("/", "-");
+
+    const created_at_date_7 = statistic.created_at.setDate(
+      statistic.created_at.getDate() - 7
+    );
+
+    let first_of_the_day = await collectionModel.aggregate([
+      {
+        $match: { name: collection_name },
+      },
+      {
+        $project: {
+          created_at: 0,
+          updated_at: 0,
+        },
+      },
+      {
+        $unwind: "$statistics",
+      },
+      {
+        $match: {
+          $and: [
+            {
+              "statistics.created_at": {
+                $gte: ISODate(`${created_at_date}T00:00:00.000Z`),
+              },
+            },
+            {
+              "statistics.created_at": {
+                $lte: ISODate(`${created_at_date}T23:59:59.000Z`),
+              },
+            },
+          ],
+        },
+      },
+      {
+        $sort: { "statistics.created_at": 1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    if (first_of_the_day.length > 0) {
+      first_of_the_day = first_of_the_day[0];
+    } else {
+      // TODO: improve fallback
+      first_of_the_day = { floor_price: 0, total_volume: 0 };
+    }
+
+    let first_of_last_7_days = await collectionModel.aggregate([
+      {
+        $match: { name: collection_name },
+      },
+      {
+        $project: {
+          created_at: 0,
+          updated_at: 0,
+        },
+      },
+      {
+        $unwind: "$statistics",
+      },
+      {
+        $match: {
+          $and: [
+            {
+              "statistics.created_at": {
+                $gte: ISODate(`${created_at_date_7}T00:00:00.000Z`),
+              },
+            },
+            {
+              "statistics.created_at": {
+                $lte: ISODate(`${created_at_date_7}T23:59:59.000Z`),
+              },
+            },
+          ],
+        },
+      },
+      {
+        $sort: { "statistics.created_at": 1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    if (first_of_last_7_days.length > 0) {
+      first_of_last_7_days = first_of_last_7_days[0];
+    } else {
+      // TODO: improve fallback
+      first_of_last_7_days = { floor_price: 0, total_volume: 0 };
+    }
+
+    const stat = {
+      total_items: statistic.total_items,
+      total_listed: statistic.total_listed,
+      total_owners: statistic.total_owners,
+      floor_price: statistic.floor_price,
+      floor_price_24: first_of_the_day.floor_price,
+      floor_price_7: first_of_last_7_days.floor_price,
+      total_volume: statistic.total_volume,
+      instant_volume: statistic.total_volume - previous_statistic.total_volume,
+      day_volume: statistic.total_volume - first_of_last_7_days.total_volume,
+    };
+
+    statistics_result.push(stat);
+  }
+
+  const st = new tempStatisticsModel({
+    name: collection_name,
+    statistics: statistics_result,
+  });
+  await st.save();
+
+  console.timeEnd(feed_temp_statistics_for_collection.name);
+  return;
+};
+
 const feed_temp_statistics = async () => {
   console.time(`start ${feed_temp_statistics.name}`);
   const collections = await collectionModel.find({}, { name: 1 });
+  console.log("collections.length", collections.length);
+
   for (const c of collections) {
     console.time(`${c.name}`);
-    await feed_temp_statistics_for_collection(c.name);
+    await feed_temp_statistics_for_collection_test(c.name);
+    // await feed_temp_statistics_for_collection(c.name);
     console.timeEnd(`${c.name}`);
   }
   console.timeEnd(`start ${feed_temp_statistics.name}`);
