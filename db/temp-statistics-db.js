@@ -536,12 +536,12 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
           $and: [
             {
               "statistics.created_at": {
-                $gte: ISODate(`${created_at_date}T00:00:00.000Z`),
+                $gte: new Date(`${created_at_date}T00:00:00.000Z`),
               },
             },
             {
               "statistics.created_at": {
-                $lte: ISODate(`${created_at_date}T23:59:59.000Z`),
+                $lte: new Date(`${created_at_date}T23:59:59.000Z`),
               },
             },
           ],
@@ -580,12 +580,12 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
           $and: [
             {
               "statistics.created_at": {
-                $gte: ISODate(`${created_at_date_7}T00:00:00.000Z`),
+                $gte: new Date(`${created_at_date_7}T00:00:00.000Z`),
               },
             },
             {
               "statistics.created_at": {
-                $lte: ISODate(`${created_at_date_7}T23:59:59.000Z`),
+                $lte: new Date(`${created_at_date_7}T23:59:59.000Z`),
               },
             },
           ],
