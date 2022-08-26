@@ -505,6 +505,7 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
   });
 
   for (let i = 0; i < temp_statistics.length; i++) {
+    console.time(`${i}-${temp_statistics}`);
     const current_statistic = temp_statistics[i];
     const previous_statistic =
       i > 0 ? temp_statistics[i - 1] : temp_statistics[i];
@@ -619,6 +620,8 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
     };
 
     statistics_result.push(stat);
+
+    console.timeEnd(`${i}-${temp_statistics}`);
   }
 
   const st = new tempStatisticsModel({
@@ -627,7 +630,7 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
   });
   await st.save();
 
-  console.timeEnd(feed_temp_statistics_for_collection.name);
+  console.timeEnd(feed_temp_statistics_for_collection_test.name);
   return;
 };
 
