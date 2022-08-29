@@ -520,8 +520,14 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
   for (let i = 0; i < temp_statistics.length; i++) {
     console.time(`${i}-${collection_name}-temp_statistics`);
     const current_statistic = temp_statistics[i];
-    const previous_statistic =
+    let previous_statistic =
       i > 0 ? temp_statistics[i - 1] : temp_statistics[i];
+
+    if (!Object.keys(previous_statistic).includes("total_volume")) {
+      previous_statistic = {
+        total_volume: 0,
+      };
+    }
 
     const statistic = current_statistic.statistics;
     const created_at_date = statistic.created_at
