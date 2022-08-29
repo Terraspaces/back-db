@@ -482,6 +482,10 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
   console.log("collection_name", collection_name);
   let statistics_result = [];
 
+  const today = new Date();
+  const last_week_date = new Date();
+  last_week_date.setDate(today.getDate() - 8);
+
   const aggregation = [
     {
       $match: { name: collection_name },
@@ -495,6 +499,15 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
     {
       $unwind: "$statistics",
     },
+
+    // TODO: Uncomment
+    // {
+    //   $match: {
+    //     "statistics.created_at": {
+    //       $gte: last_week_date,
+    //     },
+    //   },
+    // },
     {
       $sort: { "statistics.created_at": -1 },
     },
@@ -515,9 +528,13 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
       .toLocaleDateString()
       .replaceAll("/", "-");
 
-    const created_at_date_7 = statistic.created_at.setDate(
-      statistic.created_at.getDate() - 7
-    );
+    const created_at_date_7 = new Date(statistic.created_at);
+
+    created_at_date_7.setDate(created_at_date_7.getDate() - 7);
+
+    const created_at_date_7_string = created_at_date_7
+      .toLocaleDateString()
+      .replaceAll("/", "-");
 
     let first_of_the_day = await collectionModel.aggregate([
       {
@@ -581,12 +598,12 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
           $and: [
             {
               "statistics.created_at": {
-                $gte: new Date(`${created_at_date_7}T00:00:00.000Z`),
+                $gte: new Date(`${created_at_date_7_string}T00:00:00.000Z`),
               },
             },
             {
               "statistics.created_at": {
-                $lte: new Date(`${created_at_date_7}T23:59:59.000Z`),
+                $lte: new Date(`${created_at_date_7_string}T23:59:59.000Z`),
               },
             },
           ],
@@ -618,6 +635,8 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
       instant_volume: statistic.total_volume - previous_statistic.total_volume,
       day_volume: statistic.total_volume - first_of_last_7_days.total_volume,
     };
+
+    console.timeLog(`${i}-${collection_name}-temp_statistics`, stat);
 
     statistics_result.push(stat);
 
