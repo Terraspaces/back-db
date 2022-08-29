@@ -642,7 +642,10 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
       day_volume: statistic.total_volume - first_of_last_7_days.total_volume,
     };
 
-    console.timeLog(`${i}-${collection_name}-temp_statistics`, stat);
+    console.timeLog(
+      `${i}-${collection_name}-temp_statistics`,
+      JSON.stringify(stat)
+    );
 
     statistics_result.push(stat);
 
