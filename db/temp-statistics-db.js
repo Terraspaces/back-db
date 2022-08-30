@@ -640,6 +640,8 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
       total_volume: statistic.total_volume,
       instant_volume: statistic.total_volume - previous_statistic.total_volume,
       day_volume: statistic.total_volume - first_of_last_7_days.total_volume,
+      created_at: statistic.created_at,
+      updated_at: statistic.updated_at,
     };
 
     console.timeLog(
