@@ -521,7 +521,9 @@ const feed_temp_statistics_for_collection_test = async (collection_name) => {
     console.time(`${i}-${collection_name}-temp_statistics`);
     const current_statistic = temp_statistics[i];
     let previous_statistic =
-      i > 0 ? temp_statistics[i - 1] : temp_statistics[i];
+      i < temp_statistics.length - 2
+        ? temp_statistics[i + 1]
+        : temp_statistics[i];
 
     if (!Object.keys(previous_statistic).includes("total_volume")) {
       previous_statistic = {
