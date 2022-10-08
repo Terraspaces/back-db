@@ -10,18 +10,20 @@ const statisticsSchema = new mongoose.Schema(
     floor_price_24: Number,
     floor_price_7: Number,
     total_volume: Number,
+    created_at_date: String,
     instant_volume: Number,
     day_volume: Number,
   },
   {
-    _id: false,
+    _id: true,
     timestamps: {
       createdAt: "created_at",
+      updatedAt: "updated_at",
     },
   }
 );
 
-const collectionSchema = new mongoose.Schema(
+const tempStatisticsSchema = new mongoose.Schema(
   {
     name: String,
     statistics: [statisticsSchema],
@@ -34,6 +36,9 @@ const collectionSchema = new mongoose.Schema(
   }
 );
 
-const collectionModel = mongoose.model("collection", collectionSchema);
+const tempStatisticsModel = mongoose.model(
+  "tempStatistics",
+  tempStatisticsSchema
+);
 
-module.exports = collectionModel;
+module.exports = tempStatisticsModel;

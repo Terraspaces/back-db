@@ -85,7 +85,6 @@ const bulkInsertCollectionData = async (collections) => {
 
     const result = await collectionModel.bulkWrite(transactions);
 
-    console.log("result", result);
     console.log("done bulkInsertTrendingCollectionData");
   } catch (error) {
     console.error(`${bulkInsertCollectionData.name} error:`, error);

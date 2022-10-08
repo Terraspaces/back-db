@@ -11,10 +11,7 @@ const cron_upcomingevents = async () => {
     const dropResults = await fetch(url);
     const drops = await dropResults.json();
 
-    console.log("drops", drops);
-
     const existingDrops = await get_existing_drops();
-    console.log("existingDrops", existingDrops);
 
     const dropsToSave = [];
     const dropsToUpdate = [];
@@ -38,11 +35,9 @@ const cron_upcomingevents = async () => {
     }
 
     const saveResult = await dropModel.bulkSave(dropsToSave);
-    console.log("saveResult", saveResult);
     console.log("done dropModel.bulkSave");
 
     const updateResult = await dropModel.bulkWrite(dropsToUpdate);
-    console.log("updateResult", updateResult);
     console.log("done dropModel.bulkWrite");
   } catch (error) {
     console.error(`${cron_upcomingevents.name} error:`, error);
