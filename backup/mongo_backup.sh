@@ -20,10 +20,7 @@ MONGODUMP_PATH="/usr/bin/mongodump"
 BACKUPS_DIR="$pwd/backups"
 BACKUP_NAME="$MONGODB_DB-$TIMESTAMP"
  
-# mongo admin --eval "printjson(db.fsyncLock())"
-# $MONGODUMP_PATH -h $MONGO_HOST:$MONGO_PORT -d $MONGO_DATABASE
 $MONGODUMP_PATH -d $MONGO_DATABASE
-# mongo admin --eval "printjson(db.fsyncUnlock())"
  
 mkdir -p $BACKUPS_DIR
 mv dump $BACKUP_NAME

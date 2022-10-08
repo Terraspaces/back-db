@@ -1,6 +1,5 @@
 version: "3.4"
 services:
-  # https://hub.docker.com/_/mongo
   mongodb:
     image: mongo
     restart: always
@@ -12,10 +11,8 @@ services:
       MONGO_INITDB_DATABASE: "${MONGODB_DB}"
     volumes:
       - mongodata:/data/db
-    # network_mode: host
     networks:
       - mongonet
-  # https://hub.docker.com/_/mongo-express
   mongo-express:
     image: mongo-express
     restart: always
@@ -28,34 +25,6 @@ services:
       ME_CONFIG_MONGODB_URL: "mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}:${MONGODB_PORT}"
     networks:
       - mongonet
-    # network_mode: host
-  # node-web:
-  #   build:
-  #     context: ./
-  #     dockerfile: Dockerfile
-  #   restart: unless-stopped
-  #   stdin_open: true
-  #   tty: true
-  #   links:
-  #     - mongodb
-  #   volumes:
-  #     - /app/node_modules
-  #     - ./:/app
-  #   ports:
-  #     - "4001:4001"
-  #   networks:
-  #     - mongonet
-  #   environment:
-  #     MONGODB_USER: ${MONGODB_USER}
-  #     MONGODB_PASS: ${MONGODB_PASS}
-  #     MONGODB_HOST: ${MONGODB_HOST}
-  #     MONGODB_PORT: ${MONGODB_PORT}
-  #     MONGODB_DB: ${MONGODB_DB}
-  #     FETCH_URL: ${FETCH_URL}
-  #     CONTRACT_ACCOUNT_ID: ${CONTRACT_ACCOUNT_ID}
-  #     NEAR_DB_CONNECTION: ${NEAR_DB_CONNECTION}
-  #     NETWORK_ID: ${NETWORK_ID}
-  #     NODE_URL: ${NODE_URL}
 networks:
   mongonet:
     driver: bridge
